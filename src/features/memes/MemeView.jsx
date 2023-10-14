@@ -46,6 +46,8 @@ function MemeView() {
                 title={meme.title}
                 image={meme.image}
                 poster={meme.profiles.full_name}
+                voteCount={meme.votes}
+                isVotedByUser={meme.isVoted}
                 cardSize="md"
             />    
 

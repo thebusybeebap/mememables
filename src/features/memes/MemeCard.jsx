@@ -1,13 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Checkbox, Container, Divider, FormControlLabel, ImageListItem, Link, Paper, Typography } from '@mui/material';
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
 
-function MemeCard({id="#", title, image, poster, voteCount, isVotedByUser, cardSize="sm"}) {
-
-    //baka dito na lang yung pag pull nung vote count at isVoted, maaccess na dito yung user id at meme id kasi loaded na
-    //MERON DIN KASING INTERACTION DITO NA PAGUPDATE NUNG VALUES
-
+function MemeCard({id="#", title, image, poster, voteCount, isVotedByUser, voteHandler, isToggling, cardSize="sm"}) {
+    
     return(
         <Container maxWidth={cardSize} sx={{ mx: 'auto' }}>
             <Paper elevation={0} sx={{ p: 2 }}>
@@ -36,7 +33,13 @@ function MemeCard({id="#", title, image, poster, voteCount, isVotedByUser, cardS
                     <FormControlLabel
                         value="top"
                         control={ 
-                            <Checkbox icon={<FavoriteBorder />} checkedIcon={<Favorite />} checked={isVotedByUser} />
+                            <Checkbox 
+                                onClick={voteHandler} 
+                                icon={<FavoriteBorder />} 
+                                checkedIcon={<Favorite />} 
+                                checked={isVotedByUser} 
+                                disabled={isToggling}    
+                            />
                         }
                         label={voteCount}
                         labelPlacement="end"

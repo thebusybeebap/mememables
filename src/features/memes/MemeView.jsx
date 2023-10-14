@@ -5,16 +5,20 @@ import { Box, Button } from '@mui/material';;
 import { useUser } from '../authentication/useUser';
 import { useDeleteMeme } from './useDeleteMeme';
 import { useMeme } from './useMeme';
+import { useVoteToggle } from './useVoteToggle';
 
 import MemeCard from '../memes/MemeCard';
 import Loader from '../../ui/Loader';
 import { DELETE_CONFIRMATION } from "../../utils/labels";
+import { useEffect, useState } from 'react';
 
 function MemeView() {
     let navigate = useNavigate();
     let { isLoading: isLoadingUser, user, isAuthenticated } = useUser();
-    let {isLoading, meme, error} = useMeme();
+    let { isLoading, meme, error } = useMeme();
     let { isDeleting, deleteMeme } = useDeleteMeme();
+    let [isVoted, setIsVoted] = useState(false);
+    let {toggleVote, isToggling} = useVoteToggle();
 
     function handleDelete(e){
         if(confirm({DELETE_CONFIRMATION})){
@@ -22,6 +26,21 @@ function MemeView() {
             deleteMeme({memeId: meme.id, imageFileName: imageFileName});
         }
     }
+
+    function onVoteToggle(isVoted, memeId, userId){
+        setIsVoted(isVoted=>!isVoted);
+        toggleVote({isVoted, memeId, userId});
+    }
+
+    function onVoteToggleNotLoggedIn(){
+        navigate("/login", { replace: true });
+    }
+
+    useEffect(()=>{
+        if(meme && user){
+            setIsVoted(meme.votes.includes(user.id));
+        }
+    },[user?.id, meme?.votes]);
 
     if(isLoading) return(<Loader />);
 
@@ -46,8 +65,10 @@ function MemeView() {
                 title={meme.title}
                 image={meme.image}
                 poster={meme.profiles.full_name}
-                voteCount={meme.votes}
-                isVotedByUser={meme.isVoted}
+                voteCount={meme.votes.length}
+                isVotedByUser={isVoted}
+                voteHandler={isAuthenticated ? ()=>onVoteToggle(isVoted, meme.id, user.id) : onVoteToggleNotLoggedIn}
+                isToggling={isToggling}
                 cardSize="md"
             />    
 

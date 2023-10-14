@@ -1,27 +1,35 @@
 import supabase, { supabaseUrl } from "./supabase";
 
-export async function getVotesCount(memeId){
+export async function addVote(memeId, userId){
 
-    let {count} = await supabase
+    const { data, error } = await supabase
     .from('votes')
-    .select(
-        "id",
-        { count: "exact" }
-    );
+    .insert([
+      { meme_id: memeId, voted_by: userId },
+    ])
+    .select();
 
-    return count;
+    if(error){
+        console.error(error);
+        throw new Error(`Failed vote toggle`);
+    }
+
+    return data;
 }
 
-export async function isVotedByUser({memeId, userId}){
-    return true;
-}
+export async function removeVote(memeId, userId){
+    
+    const { data, error } = await supabase
+    .from('votes')
+    .delete()
+    .match({ meme_id: memeId, voted_by: userId });
+    
+    if(error){
+        console.error(error);
+        throw new Error(`Failed vote toggle`);
+    }
 
-export async function userVoteMeme({memeId, userId}){
-    return {};
-}
-
-export async function userUnvoteMeme(memeId, userId){
-    return {};
+    return data;
 }
 
 export async function getMemeIdsVotedByUser({memeId, userId}){

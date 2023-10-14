@@ -76,13 +76,13 @@ export async function getMeme(memeId){
     let { data, error } = await supabase
     .from('memes')
     .select(
-        "id, created_at, title, image, posted_by, profiles(full_name)"
+        "id, created_at, title, image, posted_by, profiles(full_name), votes(voted_by)"
     )
     .eq('id', memeId)
     .single();
 
     if(error){
-        //console.error(error);
+        console.error(error);
         throw new Error(`Failed fetching Meme:${memeId}`);
     }
 

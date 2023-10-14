@@ -24,7 +24,10 @@ export function useVoteToggle(){
           //toast.success("vote!");
           queryClient.invalidateQueries({
               queryKey: ['meme']
-          })
+          });
+          queryClient.invalidateQueries({
+            queryKey: ['memes']
+          });
         },
         onError: (err) => console.error(err.message) 
     });

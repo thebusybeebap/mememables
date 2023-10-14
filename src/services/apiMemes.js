@@ -55,7 +55,7 @@ export async function getMemesByBatch({pageParam = 0, username}){
     let query = supabase
     .from('memes')
     .select(
-        "id, created_at, title, image, posted_by, profiles!inner(full_name)"
+        "id, created_at, title, image, posted_by, profiles!inner(full_name), votes(voted_by)"
     );
     if(username){
         query = query.eq('profiles.full_name', username);
@@ -77,7 +77,7 @@ export async function getMeme(memeId){
     .from('memes')
     .select(
         "id, created_at, title, image, posted_by, profiles(full_name), votes(voted_by)"
-    )
+    ) // this actually won't scale if there are tons of like already, should find a better way of doing this, but for now it's fine
     .eq('id', memeId)
     .single();
 

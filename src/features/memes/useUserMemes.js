@@ -5,7 +5,7 @@ import { getMemesByBatch } from '../../services/apiMemes';
 
 const MEMES_LOADED = 5;
 
-//!REFACTOR
+//!REFACTOR - refarctor from useMemes, call useMemes, or just use useMemes with an added parameter
 
 function getNextUserMemes(lastPage){
     let end = lastPage.count - (lastPage.pageParam * MEMES_LOADED);

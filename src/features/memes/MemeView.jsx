@@ -18,7 +18,7 @@ function MemeView() {
     let { isLoading, meme, error } = useMeme();
     let { isDeleting, deleteMeme } = useDeleteMeme();
     let [isVoted, setIsVoted] = useState(false);
-    let {toggleVote, isToggling} = useVoteToggle();
+    let {toggleVote, isToggling} = useVoteToggle(); //MIGHT WANT TO CONSIDER REFACTORING ALL THESE STATES and hooks BY USING useReducer
 
     function handleDelete(e){
         if(confirm({DELETE_CONFIRMATION})){

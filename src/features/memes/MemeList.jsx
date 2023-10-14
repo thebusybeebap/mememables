@@ -4,16 +4,31 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 
 import { Box, ImageList } from '@mui/material';
 
+import { useUser } from '../authentication/useUser';
 import { useMemes } from './useMemes';
+import { useVoteToggle } from './useVoteToggle';
 
 import MemeCard from './MemeCard';
 import SmallLoader from '../../ui/SmallLoader';
 import Loader from '../../ui/Loader';
 import { NO_MORE_MEMES } from '../../utils/labels';
+import { useNavigate } from 'react-router-dom';
+
 
 function MemeList() {
 
+    let navigate = useNavigate();
+    let { isLoading: isLoadingUser, user, isAuthenticated } = useUser();
     let {memes, isFetching, fetchNextPage, hasNextPage, status} = useMemes();
+    let {toggleVote, isToggling} = useVoteToggle(); 
+
+    function onVoteToggle(isVoted, memeId, userId){
+        toggleVote({isVoted, memeId, userId});
+    }
+
+    function onVoteToggleNotLoggedIn(){
+        navigate("/login", { replace: true });
+    }
 
     if(status === "loading") return(<Loader />);
 
@@ -47,6 +62,10 @@ function MemeList() {
                                     title={meme.title}
                                     image={meme.image}
                                     poster={meme.profiles?.full_name}
+                                    voteCount={meme.votes.length}
+                                    isVotedByUser={meme.is_voted}
+                                    voteHandler={isAuthenticated ? ()=>onVoteToggle(meme.is_voted, meme.id, user.id) : onVoteToggleNotLoggedIn}
+                                    isToggling={isToggling}
                                 />
                             );
                         })}

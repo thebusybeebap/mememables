@@ -2,7 +2,7 @@ import supabase from "./supabase";
 
 export async function signInWithProvider(provider) {
     const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: provider,
+        provider: provider
     });
 
     if(error) throw new Error(error.message);

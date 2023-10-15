@@ -1,4 +1,5 @@
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 
 import { getMemesByBatch } from '../../services/apiMemes';
 import { getCurrentUser } from "../../services/apiAuth";
@@ -13,10 +14,17 @@ function getNextMemeBatch(lastPage){
 
 export function useMemes(){
 
+    let {username} = useParams();
+
     let {isLoading, data: user} = useQuery({
         queryKey: ['user'],
         queryFn: getCurrentUser
     });
+
+    let queryKey = 'memes';
+    if(username){
+        queryKey = 'user_memes';
+    }
 
     let {
         status,
@@ -27,8 +35,8 @@ export function useMemes(){
         fetchNextPage,
         hasNextPage,
     } = useInfiniteQuery({
-        queryKey: ['memes'],
-        queryFn: ({ pageParam = 0 }) => getMemesByBatch({pageParam}),
+        queryKey: [queryKey],
+        queryFn: ({ pageParam = 0 }) => getMemesByBatch({pageParam, username}),
         getNextPageParam: getNextMemeBatch
     });
 
@@ -40,9 +48,6 @@ export function useMemes(){
         let votes = meme?.votes.map((vote)=>vote.voted_by)
         return {...meme, votes: votes, is_voted: votes.includes(user?.id)};
     });
-
-    //console.log("useMemesTest");
-    //console.dir(user);
 
     return {memes, isFetching, fetchNextPage, hasNextPage, status};
 }

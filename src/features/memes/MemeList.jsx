@@ -23,6 +23,7 @@ function MemeList() {
     let {toggleVote, isToggling} = useVoteToggle(); 
 
     function onVoteToggle(isVoted, memeId, userId){
+        //maybe add state here so it wont be spammable, short term solution until making unique votes is done
         toggleVote({isVoted, memeId, userId});
     }
 

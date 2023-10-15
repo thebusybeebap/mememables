@@ -28,6 +28,9 @@ export function useVoteToggle(){
           queryClient.invalidateQueries({
             queryKey: ['memes']
           });
+          queryClient.invalidateQueries({
+            queryKey: ['user_memes']
+          });
         },
         onError: (err) => console.error(err.message) 
     });

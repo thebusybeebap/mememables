@@ -14,7 +14,9 @@ import Loader from '../../ui/Loader';
 import { useVoteToggle } from './useVoteToggle';
 import PostFloatingActionButton from '../../ui/PostFloatingActionButton';
 
-//!REFACTOR: maybe UserMemes would just be a page calling MemeList, figure out the loading more memes issue
+import { NO_MORE_MEMES } from '../../utils/labels';
+
+//!REFACTOR: and figure out the loading more memes issue
 
 function UserMemes() {
     let { isLoading: isLoadingUser, user, isAuthenticated } = useUser();
@@ -30,7 +32,7 @@ function UserMemes() {
         navigate("/login", { replace: true });
     }
 
-    function handleDelete(meme){
+    function deleteHandler(meme){
         if(confirm("Are you sure?")){
             let imageFileName = meme.image.substring(meme.image.lastIndexOf("/")+1, meme.image.length);
             deleteMeme({memeId: meme.id, imageFileName: imageFileName});
@@ -62,31 +64,30 @@ function UserMemes() {
                 endMessage={isFetching ? null 
                 : <SmallLoader 
                     nothingToLoad={true} 
-                    text={"No more memes. Go touch some grass."}
+                    text={NO_MORE_MEMES}
                 />}
             >
                 <Box>
-                    <ImageList cols={1} gap={24}>
-                        {memes && memes.map((meme)=>{
-                            return(
-                                <React.Fragment key={meme.id}>
-                                    <MemeCard 
-                                        id={meme.id}
-                                        title={meme.title}
-                                        image={meme.image}
-                                        poster={meme?.profiles?.full_name}
-                                        voteCount={meme.votes.length}
-                                        isVotedByUser={meme.is_voted}
-                                        voteHandler={isAuthenticated ? ()=>onVoteToggle(meme.is_voted, meme.id, user.id) : onVoteToggleNotLoggedIn}
-                                        isToggling={isToggling}
-                                    />
-                                    {(isAuthenticated && user.id === meme.posted_by)
-                                        && <Button startIcon={<DeleteIcon />} variant="contained" onClick={()=>handleDelete(meme)}>Delete Meme</Button>
-                                    }
-                                </React.Fragment>
-                            );
-                        })}
-                    </ImageList>
+                    {memes && memes.map((meme)=>{
+                        return(
+                            <MemeCard 
+                                key={meme.id}
+                                id={meme.id}
+                                title={meme.title}
+                                image={meme.image}
+                                poster={meme.profiles?.full_name}
+                                commentCount={meme.comment_count}
+                                voteCount={meme.votes.length}
+                                isVotedByUser={meme.is_voted}
+                                voteHandler={isAuthenticated ? ()=>onVoteToggle(meme.is_voted, meme.id, user.id) : onVoteToggleNotLoggedIn}
+                                isToggling={isToggling}
+                                deleteHandler={deleteHandler}
+                                isAuthenticated={isAuthenticated}
+                                userId={user?.id}
+                                posterId={meme.posted_by}
+                            />
+                        );
+                    })}
                 </Box>
             </InfiniteScroll>
 

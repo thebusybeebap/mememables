@@ -16,7 +16,7 @@ function MemeCard({
     voteHandler, 
     isToggling, 
     cardSize="sm",
-    handleDelete,
+    deleteHandler,
     userId,
     isAuthenticated
 }) {
@@ -80,7 +80,7 @@ function MemeCard({
                         <Button
                             size="small"
                             color="error"
-                            onClick={handleDelete}
+                            onClick={deleteHandler}
                             startIcon={<DeleteIcon />}
                         >
                             Delete

@@ -23,7 +23,7 @@ function MemeView() {
     let [isVoted, setIsVoted] = useState(false);
     let {toggleVote, isToggling} = useVoteToggle(); //MIGHT WANT TO CONSIDER REFACTORING ALL THESE STATES and hooks BY USING useReducer
 
-    function handleDelete(e){
+    function deleteHandler(e){
         if(confirm(DELETE_CONFIRMATION)){
             let imageFileName = meme.image.substring(meme.image.lastIndexOf("/")+1, meme.image.length);
             deleteMeme({memeId: meme.id, imageFileName: imageFileName});
@@ -75,7 +75,7 @@ function MemeView() {
                 voteHandler={isAuthenticated ? ()=>onVoteToggle(isVoted, meme.id, user.id) : onVoteToggleNotLoggedIn}
                 isToggling={isToggling}
                 cardSize="md"
-                handleDelete={handleDelete}
+                deleteHandler={deleteHandler}
                 userId={user?.id}
                 isAuthenticated={isAuthenticated}
             />

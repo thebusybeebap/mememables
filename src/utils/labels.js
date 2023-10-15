@@ -23,6 +23,6 @@ export const PAGE_NOT_FOUND_HEADER = "Page Not Found";
 
 export const REDIRECT_INSTRUCTION = "Go Back Home";
 
-export const DELETE_CONFIRMATION = "Are you sure?";
+export const DELETE_CONFIRMATION = "Are you sure you want to delete your Meme?";
 
 export const NO_MORE_MEMES = "No more memes. Go touch some grass."

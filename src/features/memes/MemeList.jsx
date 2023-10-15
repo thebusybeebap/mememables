@@ -61,6 +61,7 @@ function MemeList() {
                                 title={meme.title}
                                 image={meme.image}
                                 poster={meme.profiles?.full_name}
+                                commentCount={meme.comment_count}
                                 voteCount={meme.votes.length}
                                 isVotedByUser={meme.is_voted}
                                 voteHandler={isAuthenticated ? ()=>onVoteToggle(meme.is_voted, meme.id, user.id) : onVoteToggleNotLoggedIn}

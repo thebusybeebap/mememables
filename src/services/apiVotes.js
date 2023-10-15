@@ -31,7 +31,3 @@ export async function removeVote(memeId, userId){
 
     return data;
 }
-
-export async function getMemeIdsVotedByUser({memeId, userId}){
-    return {};
-}

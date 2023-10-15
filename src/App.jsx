@@ -38,6 +38,7 @@ function App(){
                         <Route index element={<Navigate replace to="memes" />}/>
                         <Route path="memes" element={<Memes />}/>
                         <Route path="memes/:memeId" element={<Meme />}/>
+                        <Route path="memes/:memeId/comments" element={<Meme />}/>
                         <Route path="users/:username" element={<User />}/>
                         <Route path="post" element={<ProtectedRoute><PostMeme /></ProtectedRoute>}/>
                     </Route>

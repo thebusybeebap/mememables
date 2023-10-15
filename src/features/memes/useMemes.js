@@ -45,8 +45,9 @@ export function useMemes(){
     },[]);
 
     memes = memes?.map((meme)=>{
-        let votes = meme?.votes.map((vote)=>vote.voted_by)
-        return {...meme, votes: votes, is_voted: votes.includes(user?.id)};
+        let votes = meme?.votes.map((vote)=>vote.voted_by);
+        let commentCount = meme?.comments[0].count;
+        return {...meme, votes: votes, is_voted: votes.includes(user?.id), comment_count: commentCount};
     });
 
     return {memes, isFetching, fetchNextPage, hasNextPage, status};

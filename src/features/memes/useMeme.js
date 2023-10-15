@@ -7,6 +7,8 @@ async function getMemeData(memeId){ //REACTOR THIS TO USE THE SAME solution like
   let meme = await getMeme(memeId);
   meme.votes = meme.votes.map((vote)=>vote.voted_by);
   meme.is_voted = false;
+  meme.comment_count = meme.comments[0].count;
+  //console.dir(meme);
   return meme;
 }
 

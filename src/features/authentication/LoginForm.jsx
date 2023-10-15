@@ -26,7 +26,7 @@ function LoginForm() {
                 component="a"
                 href="/"
                 sx={{
-                    fontFamily: 'Marker Felt',
+                    //fontFamily: 'Marker Felt',
                     fontWeight: 700,
                     letterSpacing: '.3rem',
                     textDecoration: 'none'

@@ -1,9 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import { Checkbox, Container, Divider, FormControlLabel, ImageListItem, Link, Paper, Typography } from '@mui/material';
-import { Favorite, FavoriteBorder } from '@mui/icons-material';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Button, Checkbox, Container, Divider, FormControlLabel, ImageListItem, Link, Paper, Typography } from '@mui/material';
+import { Favorite, FavoriteBorder, Comment } from '@mui/icons-material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-function MemeCard({id="#", title, image, poster, voteCount, isVotedByUser, voteHandler, isToggling, cardSize="sm"}) {
+function MemeCard({
+    id="#", 
+    title, 
+    image, 
+    poster,
+    posterId,
+    voteCount=0, 
+    commentCount=0, 
+    isVotedByUser=false, 
+    voteHandler, 
+    isToggling, 
+    cardSize="sm",
+    handleDelete,
+    userId,
+    isAuthenticated
+}) {
+
+    let navigate = useNavigate();
     
     return(
         <Container maxWidth={cardSize} sx={{ mx: 'auto' }}>
@@ -44,6 +62,30 @@ function MemeCard({id="#", title, image, poster, voteCount, isVotedByUser, voteH
                         label={voteCount}
                         labelPlacement="end"
                     />
+
+                    <FormControlLabel
+                        value="top"
+                        control={ 
+                            <Checkbox 
+                                onClick={()=>navigate(`/memes/${id}/comments`)} 
+                                icon={<Comment />} 
+                                checkedIcon={<Comment />}
+                            />
+                        }
+                        label={`${commentCount} ${commentCount === 1 ? 'Comment' : 'Comments'}`}
+                        labelPlacement="end"
+                    />
+
+                    {(isAuthenticated && userId === posterId) &&
+                        <Button
+                            size="small"
+                            color="error"
+                            onClick={handleDelete}
+                            startIcon={<DeleteIcon />}
+                        >
+                            Delete
+                        </Button>
+                    }
                        
                     
                 </ImageListItem>

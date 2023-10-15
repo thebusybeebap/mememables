@@ -55,7 +55,7 @@ export async function getMemesByBatch({pageParam = 0, username}){
     let query = supabase
     .from('memes')
     .select(
-        "id, created_at, title, image, posted_by, profiles!inner(full_name), votes(voted_by)"
+        "id, created_at, title, image, posted_by, profiles!inner(full_name), votes(voted_by), comments(count)"
     );
     if(username){
         query = query.eq('profiles.full_name', username);
@@ -68,7 +68,7 @@ export async function getMemesByBatch({pageParam = 0, username}){
         console.error(error);
         throw new Error("Failed fetching Memes");
     }
-
+    
     return {data, pageParam, count};
 }
 
@@ -76,7 +76,7 @@ export async function getMeme(memeId){
     let { data, error } = await supabase
     .from('memes')
     .select(
-        "id, created_at, title, image, posted_by, profiles(full_name), votes(voted_by)"
+        "id, created_at, title, image, posted_by, profiles(full_name), votes(voted_by), comments(count)"
     ) // this actually won't scale if there are tons of like already, should find a better way of doing this, but for now it's fine
     .eq('id', memeId)
     .single();

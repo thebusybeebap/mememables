@@ -5,18 +5,23 @@ import { Avatar, Box, Button, Container, Divider, IconButton, List, ListItem, Li
 import FaceIcon from '@mui/icons-material/Face';
 import ClearIcon from '@mui/icons-material/Clear';
 import SmallLoader from "../../ui/SmallLoader";
-import { usePostComment } from '../memes/usePostComment';
-import { useDeleteComment } from '../memes/useDeleteComment';
+import { usePostComment } from './usePostComment';
+import { useDeleteComment } from './useDeleteComment';
+import { useNavigate } from 'react-router-dom';
 
 function CommentsSection({user, isAuthenticated, autoFocus}) {
     let {isLoading, comments} = useComments();
     let {isPosting, postComment} = usePostComment();
     let { isDeleting, deleteComment } = useDeleteComment();
     let [commentText, setCommentText] = useState("");
+    let navigate = useNavigate();
 
 
     function postCommentHanlder(userId){
         let text = commentText;
+        if(!isAuthenticated){
+            navigate("/login");
+        }
         if(text === "" || text === undefined || !text.trim().length){
             return;
         }
@@ -65,8 +70,13 @@ function CommentsSection({user, isAuthenticated, autoFocus}) {
 
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>    
 
-                <Button disabled={isPosting} variant="text">Cancel</Button>
-                <Button disabled={isPosting} variant="contained" onClick={()=>postCommentHanlder(user?.id)} >Post</Button>
+                <Button 
+                    disabled={isPosting || !commentText}
+                    variant="contained" 
+                    onClick={()=>postCommentHanlder(user?.id)}
+                >
+                    Post
+                </Button>
                 
             </Box>
 

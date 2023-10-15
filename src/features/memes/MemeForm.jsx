@@ -81,7 +81,8 @@ function MemeForm() {
 
                 {(selectedImage && title && validFileType) 
                 && <Button 
-                    variant="contained" 
+                    variant='contained' 
+                    color='secondary'
                     type='submit'
                     fullWidth
                     onClick={handleSubmit}

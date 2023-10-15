@@ -1,6 +1,6 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-import { AppBar, Avatar, Box, Button, Toolbar } from '@mui/material';
+import { AppBar, Avatar, Box, Button, Hidden, Toolbar } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
 import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
@@ -14,6 +14,8 @@ import { LOGIN_BUTTON, LOGOUT_BUTTON, POST_BUTTON } from '../utils/labels';
 function NavBar() {
 
     let navigate = useNavigate();
+    let location = useLocation();
+
     let {user, isLoadingUser, isAuthenticated} = useUser();
     let {logout, isLoading} = useLogout();
 
@@ -77,15 +79,19 @@ function NavBar() {
                                 </Link>
                             }
                             
-                            <Button 
-                                variant="outlined"
-                                color="inherit"
-                                sx={{ borderRadius: '20rem' }}
-                                onClick={handlePostClick}
-                                startIcon={<CreateIcon />}
-                            >
-                                {POST_BUTTON}
-                            </Button>
+                            {location.pathname !== "/post" && 
+                                <Hidden smDown >
+                                    <Button 
+                                        variant="contained"
+                                        color="secondary"
+                                        sx={{ borderRadius: '20rem' }}
+                                        onClick={handlePostClick}
+                                        startIcon={<CreateIcon />}
+                                    >
+                                        {POST_BUTTON}
+                                    </Button>
+                                </Hidden>
+                            }
 
                         </Box>
                     </Box>

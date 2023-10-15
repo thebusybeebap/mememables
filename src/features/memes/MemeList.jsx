@@ -2,7 +2,7 @@ import React from 'react';
 
 import InfiniteScroll from 'react-infinite-scroll-component';
 
-import { Box, ImageList } from '@mui/material';
+import { Box } from '@mui/material';
 
 import { useUser } from '../authentication/useUser';
 import { useMemes } from './useMemes';
@@ -10,10 +10,10 @@ import { useVoteToggle } from './useVoteToggle';
 
 import MemeCard from './MemeCard';
 import SmallLoader from '../../ui/SmallLoader';
+import PostFloatingActionButton from '../../ui/PostFloatingActionButton';
 import Loader from '../../ui/Loader';
 import { NO_MORE_MEMES } from '../../utils/labels';
 import { useNavigate } from 'react-router-dom';
-
 
 function MemeList() {
 
@@ -23,7 +23,6 @@ function MemeList() {
     let {toggleVote, isToggling} = useVoteToggle(); 
 
     function onVoteToggle(isVoted, memeId, userId){
-        //maybe add state here so it wont be spammable, short term solution until making unique votes is done
         toggleVote({isVoted, memeId, userId});
     }
 
@@ -54,25 +53,29 @@ function MemeList() {
                 />}
             >
                 <Box>
-                    <ImageList cols={1} gap={24}>
-                        {memes && memes.map((meme)=>{
-                            return(
-                                <MemeCard 
-                                    key={meme.id}
-                                    id={meme.id}
-                                    title={meme.title}
-                                    image={meme.image}
-                                    poster={meme.profiles?.full_name}
-                                    voteCount={meme.votes.length}
-                                    isVotedByUser={meme.is_voted}
-                                    voteHandler={isAuthenticated ? ()=>onVoteToggle(meme.is_voted, meme.id, user.id) : onVoteToggleNotLoggedIn}
-                                    isToggling={isToggling}
-                                />
-                            );
-                        })}
-                    </ImageList>
+                    {memes && memes.map((meme)=>{
+                        return(
+                            <MemeCard 
+                                key={meme.id}
+                                id={meme.id}
+                                title={meme.title}
+                                image={meme.image}
+                                poster={meme.profiles?.full_name}
+                                voteCount={meme.votes.length}
+                                isVotedByUser={meme.is_voted}
+                                voteHandler={isAuthenticated ? ()=>onVoteToggle(meme.is_voted, meme.id, user.id) : onVoteToggleNotLoggedIn}
+                                isToggling={isToggling}
+                            />
+                        );
+                    })}
                 </Box>
             </InfiniteScroll>
+
+            <PostFloatingActionButton 
+                postURL="/post"
+                redirectURL="/login"
+                isToRedirect={!isAuthenticated}
+            />
         </Box>
     );
 }

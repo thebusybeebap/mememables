@@ -12,6 +12,7 @@ import MemeCard from './MemeCard';
 import SmallLoader from '../../ui/SmallLoader';
 import Loader from '../../ui/Loader';
 import { useVoteToggle } from './useVoteToggle';
+import PostFloatingActionButton from '../../ui/PostFloatingActionButton';
 
 //!REFACTOR: maybe UserMemes would just be a page calling MemeList, figure out the loading more memes issue
 
@@ -19,7 +20,7 @@ function UserMemes() {
     let { isLoading: isLoadingUser, user, isAuthenticated } = useUser();
     let {memes, isFetching, fetchNextPage, hasNextPage, status} = useMemes();
     let { isDeleting, deleteMeme } = useDeleteMeme("");
-    let {toggleVote, isToggling} = useVoteToggle(); 
+    let {toggleVote, isToggling} = useVoteToggle();
 
     function onVoteToggle(isVoted, memeId, userId){
         toggleVote({isVoted, memeId, userId});
@@ -88,6 +89,12 @@ function UserMemes() {
                     </ImageList>
                 </Box>
             </InfiniteScroll>
+
+            <PostFloatingActionButton 
+                postURL="/post"
+                redirectURL="/login"
+                isToRedirect={!isAuthenticated}
+            />
         </Box>
     );
 }

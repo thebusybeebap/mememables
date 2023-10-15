@@ -21,6 +21,7 @@ function CommentsSection({user, isAuthenticated, autoFocus}) {
         let text = commentText;
         if(!isAuthenticated){
             navigate("/login");
+            return;
         }
         if(text === "" || text === undefined || !text.trim().length){
             return;

@@ -1,4 +1,6 @@
-import { Box, Button, Tooltip, Typography } from '@mui/material';
+import { useState } from 'react';
+
+import { Box, Button, Divider, TextField, Tooltip, Typography } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import { useLogin } from './useLogin';
@@ -7,9 +9,25 @@ import { FULL_BANNER, LOGIN_WITH_DISCORD, DISCORD_TOOLTIP, LOGIN_WITH_TWITCH, TW
 
 function LoginForm() {
 
-    let {DiscordLogin, isLoadingD, TwitchLogin, isLoadingT} = useLogin();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
-    if(isLoadingT || isLoadingD) return <Loader />;
+    let {DiscordLogin, isLoadingD, TwitchLogin, isLoadingT, PasswordLogin, isLoadingP} = useLogin();
+
+    function handleSubmit(e) {
+        e.preventDefault();
+
+        if(!email || !password) return;
+
+        PasswordLogin({email, password}, {
+            onSettled: () => {
+                setEmail("");
+                setPassword("");
+            }
+        });
+    }
+
+    if(isLoadingT || isLoadingD || isLoadingP) return <Loader />;
 
     return (
         <Box
@@ -52,6 +70,38 @@ function LoginForm() {
                     <AccountCircleIcon/> {LOGIN_WITH_TWITCH}
                 </Button>
             </Tooltip>
+
+            <Divider>
+            <Typography>
+                OR
+            </Typography>
+            </Divider>
+
+                <TextField
+                    id="email"
+                    label="Email"
+                    type="email"
+                    autoComplete="current-email"
+                    size='small'
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                <TextField
+                    id="password"
+                    label="Password"
+                    type="password"
+                    autoComplete="current-password"
+                    size='small'
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+
+                <Button 
+                        variant="outlined"
+                        onClick={handleSubmit}
+                    >
+                        <AccountCircleIcon/> LOGIN WITH EMAIL
+                </Button>
 
         </Box>
     );

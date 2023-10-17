@@ -8,6 +8,15 @@ export async function signInWithProvider(provider) {
     if(error) throw new Error(error.message);
 }
 
+export async function signInWithPassword(email, password) {
+    let { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+    });
+
+    if(error) throw new Error(error.message);
+}
+
 export async function signout() {
     const { error } = await supabase.auth.signOut();
     if(error) throw new Error(error.message);
@@ -23,4 +32,12 @@ export async function getCurrentUser(){
     if(error) throw new Error(error.message);
 
     return data?.user;
+}
+
+export async function deleteCurrentUser(userId){
+    const { data, error } = await supabase.auth.admin.deleteUser(
+        userId
+    );
+
+    if(error) throw new Error(error.message);
 }

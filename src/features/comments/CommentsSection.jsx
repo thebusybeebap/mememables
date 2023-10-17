@@ -26,6 +26,7 @@ function CommentsSection({user, isAuthenticated, autoFocus}) {
         if(text === "" || text === undefined || !text.trim().length){
             return;
         }
+        console.dir(user);
         postComment({text, userId});
         setCommentText("");
     }
@@ -96,7 +97,7 @@ function CommentsSection({user, isAuthenticated, autoFocus}) {
                                     secondary={comment.text}
                                 />
 
-                                {comment.full_name === user?.user_metadata?.full_name && 
+                                {comment.user_id === user?.id && 
                                     <IconButton aria-label="delete" size="small" onClick={()=>deleteCommentHandler(comment.id)}>
                                         <ClearIcon fontSize="inherit" />
                                     </IconButton>

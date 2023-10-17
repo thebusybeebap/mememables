@@ -31,6 +31,8 @@ export async function getCurrentUser(){
 
     if(error) throw new Error(error.message);
 
+    if(data?.user.user_metadata)
+
     return data?.user;
 }
 

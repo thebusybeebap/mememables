@@ -27,6 +27,11 @@ export function usePostComment(){
                 queryKey: ['comments'] 
             });
         },
+        onSettled: () => {
+            queryClient.refetchQueries({ 
+                queryKey: ['comments'] 
+            });
+        },
         onError: (err) => toast.error(err.message) 
     });
 

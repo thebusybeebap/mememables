@@ -4,7 +4,7 @@ export async function getComments(memeId){
 
     let { data, error } = await supabase
     .from('comments')
-    .select('id, text, profiles(full_name, avatar_url)')
+    .select('id, text, profiles(id, full_name, avatar_url)')
     .eq('meme_id', memeId)
     .order('created_at', { ascending: false });;
 
@@ -14,7 +14,7 @@ export async function getComments(memeId){
     }
 
     let comments = data.map((comment)=>{
-        return({id: comment.id, text: comment.text, full_name: comment.profiles.full_name, avatar_url: comment.profiles.avatar_url});
+        return({id: comment.id, text: comment.text, user_id: comment.profiles.id, full_name: comment.profiles.full_name, avatar_url: comment.profiles.avatar_url});
     });
 
     return comments;

@@ -26,10 +26,18 @@ export function usePostComment(){
             queryClient.refetchQueries({ 
                 queryKey: ['comments'] 
             });
+
+            queryClient.invalidateQueries({
+                queryKey: ['meme']
+            });
         },
         onSettled: () => {
             queryClient.refetchQueries({ 
                 queryKey: ['comments'] 
+            });
+
+            queryClient.invalidateQueries({
+                queryKey: ['meme']
             });
         },
         onError: (err) => toast.error(err.message) 

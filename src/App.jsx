@@ -27,7 +27,22 @@ let queryClient = new QueryClient({
     }
 });
 
+const ReactQueryDevtoolsProduction = React.lazy(() =>
+    import('@tanstack/react-query-devtools/production').then((d) => ({
+      default: d.ReactQueryDevtools,
+    })),
+  )
+
 function App(){
+
+    const [showDevtools, setShowDevtools] = React.useState(false)
+
+    React.useEffect(() => {
+      // @ts-ignore
+      window.toggleDevtools = () => setShowDevtools((old) => !old)
+    }, [])
+  
+
     return(
         <ThemeProvider theme={theme}>
         <QueryClientProvider client={queryClient}>

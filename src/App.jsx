@@ -47,7 +47,12 @@ function App(){
     return(
         <ThemeProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
-            <ReactQueryDevtools initialIsOpen={false}/>
+            <ReactQueryDevtools initialIsOpen />
+            {showDevtools && (
+                <React.Suspense fallback={null}>
+                <ReactQueryDevtoolsProduction />
+                </React.Suspense>
+            )}
             <BrowserRouter>
                 <Routes>
                     <Route element={<AppLayout />}>

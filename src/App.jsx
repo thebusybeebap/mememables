@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import * as React from 'react'
 
 import { ThemeProvider } from '@mui/material/styles';
 import '@fontsource/roboto/300.css';
